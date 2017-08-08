@@ -9,7 +9,6 @@ from .Pay import Pay
 
 class Contracts(models.Model):
     worker = models.ForeignKey(Worker)
-    company = models.ForeignKey(Company)
-    hours = models.IntegerField()
     role = models.ForeignKey(Pay)
+    hours = models.IntegerField()
 

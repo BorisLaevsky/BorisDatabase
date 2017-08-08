@@ -7,6 +7,6 @@ from django.db import models
 
 
 class Worker(models.Model):
-    worker_id = models.IntegerField()
+    passport_number = models.IntegerField()
     full_name = models.CharField(max_length=200)
     workers_contacts = models.CharField(max_length=200)
