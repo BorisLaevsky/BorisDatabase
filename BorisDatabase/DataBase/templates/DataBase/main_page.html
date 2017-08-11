@@ -5,7 +5,9 @@
     <input type = "text"></input><button>Search</button>
     <input type = "text"></input><button>Add</button>
     <ul>
-        <li>table</li>
+    {% for worker in list_of_workers %}
+        <li>{{worker.passport_number}}, {{worker.full_name}}, {{worker.workers_contacts}}</li>
+    {% endfor %}
     </ul> 
 <body/>
 

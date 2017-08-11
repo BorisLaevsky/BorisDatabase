@@ -10,3 +10,6 @@ class Worker(models.Model):
     passport_number = models.IntegerField()
     full_name = models.CharField(max_length=200)
     workers_contacts = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.full_name

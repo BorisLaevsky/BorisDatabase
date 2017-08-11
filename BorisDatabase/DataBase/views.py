@@ -7,10 +7,13 @@ from django.shortcuts import render
 
 from django.http import HttpResponse
 from django.template import loader
+from .models import Worker
 
 def main_page(request):
+    list_of_workers = Worker.objects.order_by('-full_name')
     template = loader.get_template('DataBase/main_page.html')
     context = {
+        'list_of_workers': list_of_workers,
     }
     return HttpResponse(template.render(context, request))
 
