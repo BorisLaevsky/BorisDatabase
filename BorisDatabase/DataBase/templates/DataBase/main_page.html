@@ -2,7 +2,16 @@
     <div> <a href="/database/worker/">Workers</a></div>
     <div> <a href="/database/company/">Company</a></div>
     <div> <a href="/database/contracts/">Contracts</a></div>
-    <input type = "text"></input><button>Search</button>
+    <form action="/database/" method="post">
+        {% csrf_token %} 
+        <label for="full_name">Full name:</label>
+        <input id="full_name" type="text" name="full_name" />
+        <label for="passport_number">Passport number:</label>
+        <input id="passport_number" type="text" name="passport_number" />
+        <label for="workers_contacts">Contacts:</label>
+        <input id="workers_contacts" type="text" name="workers_contacts" />
+        <input type="submit" value="Add" />
+    </form>
     <input type = "text"></input><button>Add</button>
     <ul>
     {% for worker in list_of_workers %}
