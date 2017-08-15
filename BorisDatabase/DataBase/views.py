@@ -9,21 +9,25 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from .models import Worker
 from django.urls import reverse
+from .forms import AddWorkerForm
+
 
 def main_page(request):
     list_of_workers = Worker.objects.order_by('-full_name')
-    context = {
-        'list_of_workers': list_of_workers,
-    }
-    if request.method == 'POST' and request.POST.get('full_name', False):
-        new_worker = Worker(passport_number = 0,full_name = '',workers_contacts = '')
-        new_worker.passport_number = request.POST.get('passport_number', False)
-        new_worker.full_name = request.POST.get('full_name', False)
-        new_worker.workers_contacts = request.POST.get('workers_contacts', False)
-        new_worker.save()
-        return HttpResponseRedirect('/database/')
+    if request.method == 'POST':
+        form = AddWorkerForm(request.POST)
+        if form.is_valid():
+            new_worker = Worker(
+                passport_number = request.POST.get('passport_number'),
+                full_name = request.POST.get('full_name'),
+                workers_contacts = request.POST.get('workers_contacts')
+            )
+            new_worker.save()
+            return HttpResponseRedirect('/database/')
     else:
-        return render(request, 'DataBase/main_page.html', context)
+        form = AddWorkerForm()
+    return render(request, 'DataBase/main_page.html', {'list_of_workers': list_of_workers, 'AddWorker_form': form })
+
 
 def worker(request):
     return HttpResponse("Worker page")
