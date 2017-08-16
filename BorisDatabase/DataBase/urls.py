@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^worker/', views.worker, name='worker'),
     url(r'^company/', views.company, name='company'),
     url(r'^contracts/', views.contracts, name='contracts'),
+    url(r'^(?P<worker_passport_number>[0-9]+)/$', views.find_worker, name='find_worker'),
 ]
