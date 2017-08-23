@@ -1,0 +1,23 @@
+<body>
+    <div> <a href="/database_app/main_page/">Main page</a></div>
+    <div> <a href="/database_app/worker/">Workers</a></div>
+    <div> <a href="/database_app/contracts/">Contracts</a></div>
+    <p>You`re at the company page</p>
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ AddCompany_form }}
+        <input type="submit" value="Add" />
+    </form>
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ search_form }}
+        <input type = "submit" value="Search"/>
+    </form>
+    <ul>
+    {% for company in list_of_companies %}
+        <li>{{company.company_name}}, {{company.company_contact}}, {{company.company_adress}}</li>
+    {% endfor %}
+    </ul>
+<body/>
+
+
