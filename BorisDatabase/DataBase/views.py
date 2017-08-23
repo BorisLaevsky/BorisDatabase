@@ -7,30 +7,50 @@ from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Worker
-from .forms import AddWorkerForm, SearchWorkerForm
+from .forms import AddWorkerForm, SearchWorkerForm, LoginForm
+from django.contrib.auth import authenticate, login
+
+def login_page(request):
+    if request.method == 'POST':
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('main_page')
+            else:
+                return HttpResponseRedirect('')
+    else:
+        login_form = LoginForm()
+    return  render(request, 'DataBase/login_page.html', {'login_form': login_form, })
 
 
 def main_page(request):
-    list_of_workers = Worker.objects.order_by('-full_name')
-    if request.method == 'POST':
-        form = AddWorkerForm(request.POST)
-        search_form = SearchWorkerForm(request.POST)
-        if form.is_valid():
-            new_worker = Worker(
-                passport_number=request.POST.get('passport_number'),
-                full_name=request.POST.get('full_name'),
-                workers_contacts=request.POST.get('workers_contacts')
-            )
-            new_worker.save()
-            return HttpResponseRedirect('/database/')
-        if search_form.is_valid():
-            return HttpResponseRedirect(request.POST.get('passport_number'))
-    else:
-        form = AddWorkerForm()
-        search_form = SearchWorkerForm()
-    return render(request, 'DataBase/main_page.html', {'list_of_workers': list_of_workers,
+    if request.user.is_authenticated():
+        list_of_workers = Worker.objects.order_by('-full_name')
+        if request.method == 'POST':
+            form = AddWorkerForm(request.POST)
+            search_form = SearchWorkerForm(request.POST)
+            if form.is_valid():
+                new_worker = Worker(
+                    passport_number=request.POST.get('passport_number'),
+                    full_name=request.POST.get('full_name'),
+                    workers_contacts=request.POST.get('workers_contacts')
+                )
+                new_worker.save()
+                return HttpResponseRedirect('')
+            if search_form.is_valid():
+                return HttpResponseRedirect(request.POST.get('passport_number'))
+        else:
+            form = AddWorkerForm()
+            search_form = SearchWorkerForm()
+        return render(request, 'DataBase/main_page.html', {'list_of_workers': list_of_workers,
                                                        'AddWorker_form': form,
                                                        'search_form': search_form, })
+    else:
+        return HttpResponseRedirect('/database_app/')
 
 
 def worker(request):
@@ -47,3 +67,6 @@ def company(request):
 
 def contracts(request):
     return HttpResponse('Contracts page')
+
+
+

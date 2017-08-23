@@ -1,13 +1,13 @@
 <body>
-    <div> <a href="/database/worker/">Workers</a></div>
-    <div> <a href="/database/company/">Company</a></div>
-    <div> <a href="/database/contracts/">Contracts</a></div>
-    <form action="/database/" method="post">
+    <div> <a href="/database_app/worker/">Workers</a></div>
+    <div> <a href="/database_app/company/">Company</a></div>
+    <div> <a href="/database_app/contracts/">Contracts</a></div>
+    <form action="." method="post">
         {% csrf_token %} 
         {{ AddWorker_form }}
         <input type="submit" value="Add" />    
     </form>
-    <form action="/database/" method="post">
+    <form action="." method="post">
         {% csrf_token %} 
         {{ search_form }}
         <input type = "submit" value="Search"/>

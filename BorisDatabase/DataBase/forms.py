@@ -9,3 +9,8 @@ class AddWorkerForm(forms.Form):
 
 class SearchWorkerForm(forms.Form):
     passport_number = forms.CharField(label='passport_number', max_length=200)
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='username', max_length=200)
+    password = forms.CharField(label='password', max_length=200)
