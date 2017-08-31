@@ -6,8 +6,8 @@ from django.shortcuts import render
 # Create your views here.
 
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Worker, Company
-from .forms import AddWorkerForm, SearchWorkerForm, LoginForm, SearchCompanyForm, AddCompanyForm
+from .models import Worker, Company, Pay
+from .forms import AddWorkerForm, SearchWorkerForm, LoginForm, SearchCompanyForm, AddCompanyForm, AddPayForm, SearchPayForm
 from django.contrib.auth import authenticate, login
 
 def login_page(request):
@@ -113,5 +113,38 @@ def find_company(request, company_name):
 def contracts(request):
     return HttpResponse('Contracts page')
 
+
+def pay(request):
+    if request.user.is_authenticated():
+        list_of_pays = Pay.objects.order_by('-company')
+        if request.method == 'POST':
+            form = AddPayForm(request.POST)
+            search_form = SearchPayForm(request.POST)
+            if form.is_valid():
+                new_pay = Pay(
+                    company=Company.objects.get(pk=int(request.POST.get('company'))),
+                    role=request.POST.get('role'),
+                    pay=request.POST.get('pay'),
+                )
+                new_pay.save()
+                return HttpResponseRedirect('')
+            if search_form.is_valid():
+                return HttpResponseRedirect('/database_app/main_page/pay/' + request.POST.get('role'))
+        else:
+            form = AddPayForm()
+            search_form = SearchPayForm()
+        return render(request, 'DataBase/pay_page.html', {'list_of_pays': list_of_pays,
+                                                       'AddPay_form': form,
+                                                       'search_form': search_form, })
+    else:
+        return HttpResponseRedirect('/database_app/')
+
+
+def find_pay(request, role):
+    if request.user.is_authenticated():
+        pay_info = Pay.objects.filter(role__contains = role)
+        return render(request, 'DataBase/find_pay.html', {'pay_info': pay_info, })
+    else:
+        return HttpResponseRedirect('/database_app/')
 
 

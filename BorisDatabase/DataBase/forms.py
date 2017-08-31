@@ -1,5 +1,5 @@
 from django import forms
-
+from .models import Company
 
 class AddWorkerForm(forms.Form):
     full_name = forms.CharField(label='full_name', max_length=200)
@@ -21,7 +21,18 @@ class AddCompanyForm(forms.Form):
     company_contact = forms.CharField(label='company_contact', max_length=200)
     company_adress = forms.CharField(label='company_adress', max_length=200)
 
+
 class SearchCompanyForm(forms.Form):
     company_name = forms.CharField(label='company_name', max_length=200)
+
+
+class AddPayForm(forms.Form):
+    company = forms.ModelMultipleChoiceField(queryset=Company.objects.all())
+    role = forms.CharField(label='role', max_length=200)
+    pay = forms.CharField(label='pay', max_length=200)
+
+
+class SearchPayForm(forms.Form):
+    pay = forms.CharField(label='pay', max_length=200)
 
 

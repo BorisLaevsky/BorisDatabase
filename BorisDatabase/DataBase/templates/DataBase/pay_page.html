@@ -1,11 +1,11 @@
 <body>
     <div> <a href="/database_app/main_page/">Main page</a></div>
+    <div> <a href="/database_app/worker/">Worker</a></div>
     <div> <a href="/database_app/company/">Company</a></div>
-    <div> <a href="/database_app/pay/">Pay</a></div>
     <div> <a href="/database_app/contracts/">Contracts</a></div>
     <form action="." method="post">
         {% csrf_token %}
-        {{ AddWorker_form }}
+        {{ AddPay_form }}
         <input type="submit" value="Add" />
     </form>
     <form action="." method="post">
@@ -14,11 +14,9 @@
         <input type = "submit" value="Search"/>
     </form>
     <ul>
-    {% for worker in list_of_workers %}
-        <li>{{worker.passport_number}}, {{worker.full_name}}, {{worker.workers_contacts}}</li>
+    {% for detail in list_of_pays %}
+        <li>{{detail.company.company_name}}, {{detail.company.company_adress}}, {{detail.role}}, {{detail.pay}}</li>
     {% endfor %}
     </ul>
 <body/>
-
-
 
